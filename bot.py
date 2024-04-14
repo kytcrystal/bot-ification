@@ -82,6 +82,17 @@ def menu(update: Update, context: CallbackContext) -> None:
         reply_markup=FIRST_MENU_MARKUP
     )
 
+def check_menu(update: Update, context: CallbackContext) -> None:
+    """
+    This handler sends a menu with the inline buttons we pre-assigned above
+    """
+
+    context.bot.send_message(
+        update.message.from_user.id,
+        FIRST_MENU,
+        parse_mode=ParseMode.HTML,
+        reply_markup=FIRST_MENU_MARKUP
+    )
 
 def button_tap(update: Update, context: CallbackContext) -> None:
     """
@@ -121,6 +132,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("scream", scream))
     dispatcher.add_handler(CommandHandler("whisper", whisper))
     dispatcher.add_handler(CommandHandler("menu", menu))
+    dispatcher.add_handler(CommandHandler("check", check_menu))
 
     # Register handler for inline buttons
     dispatcher.add_handler(CallbackQueryHandler(button_tap))
