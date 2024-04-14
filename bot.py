@@ -10,13 +10,13 @@ logger = logging.getLogger(__name__)
 screaming = False
 
 # Pre-assign menu text
-FIRST_MENU = "<b>Menu 1</b>\n\nA beautiful menu with a shiny inline button."
-SECOND_MENU = "<b>Menu 2</b>\n\nA better menu with even more shiny inline buttons."
+FIRST_MENU = "<b>Menu 1</b>\n\nCheck if commit is needed."
+SECOND_MENU = "<b>Menu 2</b>\n\nCheck how many commits needed."
 
 # Pre-assign button text
-NEXT_BUTTON = "Next"
+CHECK_BUTTON = "Commit Today?"
 BACK_BUTTON = "Back"
-TUTORIAL_BUTTON = "Tutorial"
+GITHUB_LINK = "GitHub"
 
 TOKEN = os.environ.get("BOT_TOKEN")
 if TOKEN == None:
@@ -24,11 +24,11 @@ if TOKEN == None:
 
 # Build keyboards
 FIRST_MENU_MARKUP = InlineKeyboardMarkup([[
-    InlineKeyboardButton(NEXT_BUTTON, callback_data=NEXT_BUTTON)
+    InlineKeyboardButton(CHECK_BUTTON, callback_data=CHECK_BUTTON)
 ]])
 SECOND_MENU_MARKUP = InlineKeyboardMarkup([
     [InlineKeyboardButton(BACK_BUTTON, callback_data=BACK_BUTTON)],
-    [InlineKeyboardButton(TUTORIAL_BUTTON, url="https://core.telegram.org/bots/api")]
+    [InlineKeyboardButton(GITHUB_LINK, url="https://github.com/kytcrystal")]
 ])
 
 
@@ -92,7 +92,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
     text = ''
     markup = None
 
-    if data == NEXT_BUTTON:
+    if data == CHECK_BUTTON:
         text = SECOND_MENU
         markup = SECOND_MENU_MARKUP
     elif data == BACK_BUTTON:

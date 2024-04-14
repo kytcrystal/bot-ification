@@ -7,5 +7,5 @@ Reference:
 - https://gitlab.com/Athamaxy/telegram-bot-tutorial/-/tree/main
 
 Notes:
-To reload environment file, run `source .env`
-To install requirements, run `pip install -r requirements.txt`
+- To reload environment file, run `source .env`
+- To install requirements, run `pip install -r requirements.txt`
