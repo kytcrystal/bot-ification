@@ -8,3 +8,4 @@ Reference:
 
 Notes:
 To reload environment file, run `source .env`
+To install requirements, run `pip install -r requirements.txt`
