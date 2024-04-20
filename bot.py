@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import date
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
@@ -82,16 +83,16 @@ def menu(update: Update, context: CallbackContext) -> None:
         reply_markup=FIRST_MENU_MARKUP
     )
 
-def check_menu(update: Update, context: CallbackContext) -> None:
-    """
-    This handler sends a menu with the inline buttons we pre-assigned above
-    """
+commit_dict = {"2024-04-19":"1-4", "2024-04-20":"1-4", "2024-04-21":"1-4"}
+
+def check(update: Update, context: CallbackContext) -> None:
+
+    today = date.today()
+    commit_number = commit_dict.get(str(today))
 
     context.bot.send_message(
         update.message.from_user.id,
-        FIRST_MENU,
-        parse_mode=ParseMode.HTML,
-        reply_markup=FIRST_MENU_MARKUP
+        text=f"Today is {today}. You should make {commit_number} commits today"
     )
 
 def button_tap(update: Update, context: CallbackContext) -> None:
@@ -132,7 +133,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("scream", scream))
     dispatcher.add_handler(CommandHandler("whisper", whisper))
     dispatcher.add_handler(CommandHandler("menu", menu))
-    dispatcher.add_handler(CommandHandler("check", check_menu))
+    dispatcher.add_handler(CommandHandler("check", check))
 
     # Register handler for inline buttons
     dispatcher.add_handler(CallbackQueryHandler(button_tap))
