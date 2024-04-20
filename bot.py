@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import date
+import csv
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
@@ -83,12 +84,16 @@ def menu(update: Update, context: CallbackContext) -> None:
         reply_markup=FIRST_MENU_MARKUP
     )
 
-commit_dict = {"2024-04-19":"1-4", "2024-04-20":"1-4", "2024-04-21":"1-4"}
+csv_file = 'commit_dates.csv'
+commit_dict = csv.DictReader(open(csv_file))
 
 def check(update: Update, context: CallbackContext) -> None:
 
+    commit_number = "0"
     today = date.today()
-    commit_number = commit_dict.get(str(today))
+    for row in commit_dict:
+        if row["date"] == str(today):
+            commit_number = row["number of commits"]
 
     context.bot.send_message(
         update.message.from_user.id,
