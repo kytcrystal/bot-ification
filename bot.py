@@ -84,15 +84,16 @@ def menu(update: Update, context: CallbackContext) -> None:
         reply_markup=FIRST_MENU_MARKUP
     )
 
-csv_file = 'commit_dates.csv'
-commit_dict = csv.DictReader(open(csv_file))
-
 def check(update: Update, context: CallbackContext) -> None:
+
+    csv_file = 'commit_dates.csv'
+    commit_dict = csv.DictReader(open(csv_file))
 
     commit_number = "0"
     today = date.today()
     for row in commit_dict:
         if row["date"] == str(today):
+            print(row["date"], row["number of commits"])
             commit_number = row["number of commits"]
 
     context.bot.send_message(
