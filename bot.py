@@ -84,22 +84,28 @@ def menu(update: Update, context: CallbackContext) -> None:
         reply_markup=FIRST_MENU_MARKUP
     )
 
-def check(update: Update, context: CallbackContext) -> None:
+def checktoday(update: Update, context: CallbackContext) -> None:
 
-    csv_file = 'commit_dates.csv'
-    commit_dict = csv.DictReader(open(csv_file))
-
-    commit_number = "0"
     today = date.today()
-    for row in commit_dict:
-        if row["date"] == str(today):
-            print(row["date"], row["number of commits"])
-            commit_number = row["number of commits"]
+    commit_number = get_commit_number(today)
 
     context.bot.send_message(
         update.message.from_user.id,
         text=f"Today is {today}. You should make {commit_number} commits today"
     )
+
+def get_commit_number(input_date) -> None:
+
+    csv_file = 'commit_dates.csv'
+    commit_dict = csv.DictReader(open(csv_file))
+
+    commit_number = "0"
+    for row in commit_dict:
+        if row["date"] == str(input_date):
+            print(row["date"], row["number of commits"])
+            commit_number = row["number of commits"]
+
+    return commit_number
 
 def button_tap(update: Update, context: CallbackContext) -> None:
     """
@@ -139,7 +145,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("scream", scream))
     dispatcher.add_handler(CommandHandler("whisper", whisper))
     dispatcher.add_handler(CommandHandler("menu", menu))
-    dispatcher.add_handler(CommandHandler("check", check))
+    dispatcher.add_handler(CommandHandler("checktoday", checktoday))
 
     # Register handler for inline buttons
     dispatcher.add_handler(CallbackQueryHandler(button_tap))
