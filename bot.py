@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import date
+from datetime import date, datetime
 import csv
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton
@@ -34,6 +34,35 @@ async def checktoday(update: Update, context: CallbackContext) -> None:
         text=f"Today is {today}. You should make {commit_number} commits today"
     )
 
+async def check(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    if len(context.args) == 0:
+        await update.message.reply_text(
+        text=f"Please insert /check followed by date in the following format YYYY-MM-DD"
+        )  
+        return
+
+    input_date = context.args[0]
+
+    format = "%Y-%m-%d"
+
+    try:
+        res = bool(datetime.strptime(input_date, format))
+    except ValueError:
+        res = False    
+
+    if not res:
+        await update.message.reply_text(
+        text=f"Please insert valid date in the following format YYYY-MM-DD"
+        )  
+        return
+
+    commit_number = get_commit_number(input_date)
+
+    await update.message.reply_text(
+        text=f"You should make {commit_number} commits on {input_date}"
+    )    
+
 def get_commit_number(input_date) -> None:
 
     csv_file = 'commit_dates.csv'
@@ -59,6 +88,7 @@ def main() -> None:
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler(["start", "help"], start))
     application.add_handler(CommandHandler("checktoday", checktoday))
+    application.add_handler(CommandHandler("check", check))
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling(allowed_updates=Update.ALL_TYPES)
