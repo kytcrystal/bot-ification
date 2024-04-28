@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "bot-ification"
+version = "0.1.0"
+description = ""
+authors = ["Crystal Kwok <kwokyatingcrystal@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-telegram-bot = "^21.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
