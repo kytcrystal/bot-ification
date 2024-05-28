@@ -25,24 +25,25 @@ TOKEN = os.environ.get("BOT_TOKEN")
 if TOKEN == None:
     raise Exception("Please set bot token")
 
-async def checktoday(update: Update, context: CallbackContext) -> None:
-
+async def check_today(update):
     today = date.today()
     commit_number = get_commit_number(today)
 
     await update.message.reply_text(
-        text=f"Today is {today}. You should make {commit_number} commits today"
-    )
-
+            text=f"Today is {today}. You should make {commit_number} commits today"
+        )  
+    
 async def check(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if len(context.args) == 0:
-        await update.message.reply_text(
-        text=f"Please insert /check followed by date in the following format YYYY-MM-DD"
-        )  
+        await check_today(update)
         return
 
     input_date = context.args[0]
+    
+    if input_date == "today":
+        await check_today(update)
+        return
 
     format = "%Y-%m-%d"
 
@@ -61,7 +62,8 @@ async def check(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     await update.message.reply_text(
         text=f"You should make {commit_number} commits on {input_date}"
-    )    
+    ) 
+ 
 
 def get_commit_number(input_date) -> None:
 
@@ -87,7 +89,6 @@ def main() -> None:
 
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler(["start", "help"], start))
-    application.add_handler(CommandHandler("checktoday", checktoday))
     application.add_handler(CommandHandler("check", check))
 
     # Run the bot until the user presses Ctrl-C
