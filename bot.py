@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import csv
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton
@@ -24,25 +24,28 @@ GITHUB_LINK = "GitHub"
 TOKEN = os.environ.get("BOT_TOKEN")
 if TOKEN == None:
     raise Exception("Please set bot token")
-
-async def check_today(update):
-    today = date.today()
-    commit_number = get_commit_number(today)
+    
+async def check_by_date(update, keyword):
+    value = date.today() 
+    if keyword == "tomorrow":
+        value += timedelta(days=1) 
+        
+    commit_number = get_commit_number(value)
 
     await update.message.reply_text(
-            text=f"Today is {today}. You should make {commit_number} commits today"
+            text=f"You should make {commit_number} commits {keyword}"
         )  
     
 async def check(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     if len(context.args) == 0:
-        await check_today(update)
+        await check_by_date(update, "today")
         return
 
     input_date = context.args[0]
     
-    if input_date == "today":
-        await check_today(update)
+    if input_date in ["today", "tomorrow"]:
+        await check_by_date(update, input_date)
         return
 
     format = "%Y-%m-%d"
