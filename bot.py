@@ -2,7 +2,7 @@ import os
 from datetime import date, datetime, timedelta
 import csv
 
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 
@@ -63,22 +63,13 @@ def get_commit_number(input_date) -> None:
     return commit_number
 
 
-
-FIRST_MENU = "<b>Menu 1</b>\n\nA beautiful menu with a shiny inline button."
-NEXT_BUTTON = "Next"
-BACK_BUTTON = "Back"
-TUTORIAL_BUTTON = "Tutorial"
-
-FIRST_MENU_MARKUP = InlineKeyboardMarkup([[
-    InlineKeyboardButton(NEXT_BUTTON, callback_data=NEXT_BUTTON)
-]])
-
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    reply_keyboard = [['/start', '/help', '/check']]
     
     await update.message.reply_text(
-        text=f"You have selected Menu"
-    ) 
-
+        'Please choose a command:',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+    )
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
