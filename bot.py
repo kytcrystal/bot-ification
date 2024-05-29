@@ -2,8 +2,9 @@ import os
 from datetime import date, datetime, timedelta
 import csv
 
-from telegram import Update
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import Application, CommandHandler, ContextTypes
+
 
 TOKEN = os.environ.get("BOT_TOKEN")
 if TOKEN == None:
@@ -62,6 +63,24 @@ def get_commit_number(input_date) -> None:
     return commit_number
 
 
+
+FIRST_MENU = "<b>Menu 1</b>\n\nA beautiful menu with a shiny inline button."
+NEXT_BUTTON = "Next"
+BACK_BUTTON = "Back"
+TUTORIAL_BUTTON = "Tutorial"
+
+FIRST_MENU_MARKUP = InlineKeyboardMarkup([[
+    InlineKeyboardButton(NEXT_BUTTON, callback_data=NEXT_BUTTON)
+]])
+
+async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    
+    await update.message.reply_text(
+        text=f"You have selected Menu"
+    ) 
+
+
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends explanation on how to use the bot."""
     await update.message.reply_text("Hi! Use /check to check if commit is needed today :)")
@@ -72,6 +91,7 @@ def main() -> None:
 
     application.add_handler(CommandHandler(["start", "help"], start))
     application.add_handler(CommandHandler("check", check))
+    application.add_handler(CommandHandler("menu", menu))
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling(allowed_updates=Update.ALL_TYPES)
