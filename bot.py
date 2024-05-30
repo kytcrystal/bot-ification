@@ -82,7 +82,7 @@ async def checknext(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     date_value = date.today() 
     text = "" 
     
-    for num in range(0,days):
+    for _ in range(0,days):
         date_value += timedelta(days=1) 
         commit_number = get_commit_number(date_value)
         text += f"On {date_value}: {commit_number} commits\n"
@@ -92,7 +92,7 @@ async def checknext(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     ) 
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    reply_keyboard = [['/start', '/help', '/check']]
+    reply_keyboard = [['/start', '/help', '/check', '/checknext']]
     
     await update.message.reply_text(
         'Please choose a command:',
