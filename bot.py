@@ -70,15 +70,15 @@ async def checknext(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     days = int(context.args[0])
     date_value = date.today() 
-    commits = {}
+    text = "" 
     
-    for day_number in range(0,days):
+    for num in range(0,days):
         date_value += timedelta(days=1) 
         commit_number = get_commit_number(date_value)
-        commits[date_value] = commit_number
+        text += f"On {date_value}: {commit_number} commits\n"
         
     await update.message.reply_text(
-        text=f"{commits}"
+        text
     ) 
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
