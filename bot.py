@@ -68,7 +68,17 @@ async def checknext(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await check_by_date(update, "tomorrow")
         return
 
-    days = int(context.args[0])
+    try:
+        days = int(context.args[0])
+    except ValueError:
+        res = False    
+
+    if not res:
+        await update.message.reply_text(
+        text=f"Please insert the number of days to check"
+        )  
+        return
+    
     date_value = date.today() 
     text = "" 
     
