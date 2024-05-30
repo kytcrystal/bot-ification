@@ -62,6 +62,24 @@ def get_commit_number(input_date) -> None:
 
     return commit_number
 
+async def checknext(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+
+    if len(context.args) == 0:
+        await check_by_date(update, "tomorrow")
+        return
+
+    days = int(context.args[0])
+    date_value = date.today() 
+    commits = {}
+    
+    for day_number in range(0,days):
+        date_value += timedelta(days=1) 
+        commit_number = get_commit_number(date_value)
+        commits[date_value] = commit_number
+        
+    await update.message.reply_text(
+        text=f"{commits}"
+    ) 
 
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     reply_keyboard = [['/start', '/help', '/check']]
@@ -82,6 +100,7 @@ def main() -> None:
 
     application.add_handler(CommandHandler(["start", "help"], start))
     application.add_handler(CommandHandler("check", check))
+    application.add_handler(CommandHandler("checknext", checknext))
     application.add_handler(CommandHandler("menu", menu))
 
     # Run the bot until the user presses Ctrl-C
