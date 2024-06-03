@@ -69,7 +69,7 @@ async def checknext(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
 
     try:
-        days = int(context.args[0])
+        res = int(context.args[0])
     except ValueError:
         res = False    
 
@@ -82,6 +82,7 @@ async def checknext(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     date_value = date.today() 
     text = "" 
     
+    days = res
     for _ in range(0,days):
         date_value += timedelta(days=1) 
         commit_number = get_commit_number(date_value)
