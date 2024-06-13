@@ -15,7 +15,9 @@ Environment File
 - Create a file name `.env`
 - Inside the file, include `export BOT_TOKEN=<your_token>`. In `your_token`, replace with the token from Telegram. Instructions on how to get the token can be found [here](#get-telegram-bot-token)
 
-To run bot.py
+Generate CSV File
+
+Run bot.py
 
 - Load environment file, run `source .env`
 - Run file in virtual environment `poetry run python3 bot.py`
