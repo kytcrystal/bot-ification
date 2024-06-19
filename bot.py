@@ -100,6 +100,14 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
     )
 
+async def help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Sends explanation on how to use the bot."""
+    await update.message.reply_text(
+        '''Here are the list of commands you can use:
+    /check: checks if commit is needed today
+    /check YYYY-MM-DD: checks if commit is needed on YYYY-MM-DD
+    /checknext: checks if commit is needed tomorrow
+    /checknext N: checks if commit is needed the next N days, starting tomorrow''')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends explanation on how to use the bot."""
@@ -109,7 +117,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 def main() -> None:
     application = Application.builder().token(TOKEN).build()
 
-    application.add_handler(CommandHandler(["start", "help"], start))
+    application.add_handler(CommandHandler(["start"], start))
+    application.add_handler(CommandHandler(["help"], help))
     application.add_handler(CommandHandler("check", check))
     application.add_handler(CommandHandler("checknext", checknext))
     application.add_handler(CommandHandler("menu", menu))
